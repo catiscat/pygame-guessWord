@@ -1,0 +1,144 @@
+
+
+word_List = ["blue","red","green","black","white","yellow"]
+
+import random,re
+
+def create_random():
+    word_index = random.randint(0,2)
+    correct_word = word_List[word_index]
+    return correct_word
+
+
+def input_letter():
+    while True:
+        guess_letter = input("please enter a letter:")
+
+        if len(guess_letter) > 1:
+             print("please enter a Single letter")
+        elif re.match("\d",guess_letter):
+             print("please enter a Letter,not Number:")
+        else:
+            break
+    return guess_letter
+
+
+def remind_repeated_letter(guess_letter,have_guess_letters):
+
+
+    if guess_letter in have_guess_letters:
+        print("you have guessed this letter, please enter a Different letter:")
+        return have_guess_letters
+    else:
+        have_guess_letters.append(guess_letter)
+        return have_guess_letters
+
+
+
+
+
+def check_letter(correct_word,guess_letter):
+    if guess_letter in correct_word:
+        check_result = True
+    else:
+        check_result = False
+    return check_result
+
+
+def show_table(correct_word,guess_letter,check_result):
+    if check_result =="q" :
+        print("welcom to hungman game")
+    elif check_result:
+        print("you put a right letter:",guess_letter)
+    else:
+        print("you put a wrong letter:",guess_letter)
+
+
+def win_fail(correct_word,guess_letter,check_result,wrong_guess_numbers,have_guess_letters):
+    if check_result == False:
+           wrong_guess_numbers = wrong_guess_numbers+1
+    return wrong_guess_numbers
+
+
+def guess_right_letter(correct_word,guess_letter):
+    right_guess_letters = []
+    for x in range(len(correct_word)):
+        if correct_word[x] in guess_word:
+            right_guess_letters.append(correct_word[x])
+    return right_guess_letters
+
+
+def is_win(correct_word,guess_word):
+    temp = 0
+    for x in range(len(correct_word)):
+        if correct_word[x] in guess_word:
+                temp = temp +1
+    if temp == len(correct_word):
+        return True
+    else:
+        return False
+
+
+def is_failed(guess_wrong_numbers):
+    if guess_wrong_numbers > 6:
+        return True
+    else:
+        return False
+
+def play_again():
+    try_again = input("do you want to try again? y/n")
+    try_again.lower()
+    if try_again == "y":
+        return True
+    else:
+        return False
+
+
+def empty_all():
+
+    wrong_guess_numbers = 0
+    correct_word= create_random()
+    guess_letter = ""
+    check_result= "q"
+    guess_word = []
+    have_guess_letters = []
+    right_guess_letters=[]
+    guess_word=[]
+    return wrong_guess_numbers,correct_word,guess_letter,check_result,guess_word,have_guess_letters,\
+           right_guess_letters,guess_word
+
+
+
+(wrong_guess_numbers,correct_word,guess_letter,check_result,guess_word,have_guess_letters,\
+right_guess_letters,guess_word)=empty_all()
+while True:
+    #print("guess_word",guess_word,"have_guess_letters",have_guess_letters,"correct_word",correct_word,"guess_letter",guess_letter,"check_result",check_result,"right_guess_letters",right_guess_letters)
+    show_table(correct_word,guess_letter,check_result)
+    guess_letter=input_letter()
+    have_guess_letters=remind_repeated_letter(guess_letter,have_guess_letters)
+    guess_word.append(guess_letter)
+    check_result=check_letter(correct_word,guess_letter)
+    wrong_guess_numbers=win_fail(correct_word,guess_letter,check_result,wrong_guess_numbers,have_guess_letters)
+    right_guess_letters = guess_right_letter(correct_word,guess_letter)
+    if is_win(correct_word,guess_word):
+        print("have_guess_letters",have_guess_letters,"\nyou guess right letters:",right_guess_letters,"\ncorrect_word is:",correct_word,"\nyou won!")
+        if play_again():
+            (wrong_guess_numbers,correct_word,guess_letter,check_result,guess_word,have_guess_letters,\
+           right_guess_letters,guess_word)=empty_all()
+        else:
+            break
+    if is_failed(wrong_guess_numbers):
+        print("have_guess_letters",have_guess_letters,"\nyour guessed right letters are:",right_guess_letters,"\ncorrect_word is:",correct_word,"\nyou failed!")
+        if play_again():
+            (wrong_guess_numbers,correct_word,guess_letter,check_result,guess_word,have_guess_letters,\
+           right_guess_letters,guess_word)=empty_all()
+        else:
+            break
+
+
+
+
+
+
+ 
+
